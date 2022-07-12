@@ -6,7 +6,8 @@ const ArticleSchema = new Schema({
         type: String,
         required: true,
         minlength: [5, 'Title must be at least 5 characters.'],
-        maxlength: [400, 'Title cannot exceed 400 characters.']
+        maxlength: [400, 'Title cannot exceed 400 characters.'],
+        index: 'text'
     },
     subtitle: {
         type: String,

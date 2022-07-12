@@ -24,10 +24,9 @@ async function createArticle(req, res, next) {
       owner: req.body.owner,
       category: req.body.category
     });
-    
-    await User.updateOne({_id: article.owner}, {$inc: {numberOfArticles: 1}});
 
     await article.save();
+    await User.updateOne({_id: article.owner}, {$inc: {numberOfArticles: 1}});
     return res.status(200).json(article);
   } catch (error) {
     next(error);
@@ -42,12 +41,12 @@ async function updateArticle(req, res, next) {
 
     const article = await Article.findById(req.params.articleId);
     if (!article) {
-      return next(errorHelper.badRequest('Article isn`t exist'));
+      return next(errorHelper.badRequest('Article doesn`t exist'));
     }
     if (req.body.owner) {
       const owner = await User.findById(req.body.owner);
       if (!owner) {
-        return next(errorHelper.badRequest('Owner isn`t exist'));
+        return next(errorHelper.badRequest('Owner doesn`t exist'));
       }
       article.owner = req.body.owner;
     }
@@ -88,11 +87,11 @@ async function deleteArticle(req, res, next) {
     }
     const article = await Article.findById(req.params.articleId);
     if (!article) {
-      return next(errorHelper.badRequest('Article isn`t exist'));
+      return next(errorHelper.badRequest('Article doesn`t exist'));
     }
 
-    await User.updateOne({_id: article.owner}, {$inc: {numberOfArticles: -1}});
     await Article.deleteOne({_id: article._id});
+    await User.updateOne({_id: article.owner}, {$inc: {numberOfArticles: -1}});
     return res.status(200).json(article);
   } catch (error) {
     next(error);

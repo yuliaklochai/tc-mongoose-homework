@@ -23,7 +23,7 @@ async function updateUser(req, res, next) {
   try {
     const existingUser = await User.findById(req.params.userId);
     if (!existingUser) {
-      return next(errorHelper.badRequest('User isn`t exist.'));
+      return next(errorHelper.badRequest('User doesn`t exist.'));
     }
 
     const requiredFields = ['firstName', 'lastName', 'role'];
@@ -45,7 +45,7 @@ async function getUser(req, res, next) {
   try {
     const existingUser = await User.findById(req.params.userId).lean();
     if (!existingUser) {
-      return next(errorHelper.badRequest('User isn`t exist.'));
+      return next(errorHelper.badRequest('User doesn`t exist.'));
     }
     const articles = await Article.find({owner: req.params.userId});
     existingUser.articles = articles;
@@ -59,7 +59,7 @@ async function deleteUser(req, res, next) {
   try {
     const user = await User.findById(req.params.userId);
     if (!user) {
-      return next(errorHelper.badRequest('User isn`t exist'));
+      return next(errorHelper.badRequest('User doesn`t exist'));
     }
     await Article.deleteMany({owner: user._id});
     await User.deleteOne({_id: user._id});
